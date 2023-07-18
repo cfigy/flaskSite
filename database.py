@@ -1,7 +1,14 @@
 from sqlalchemy import create_engine, text
 import os
 
-def createTable(engine):
+my_secret = os.environ['db_key']
+engine = create_engine(my_secret, connect_args={
+    "ssl":{
+    "ssl_ca": "/etc/ssl/cert.pem"
+    }
+  })
+
+def createTable():
   createtbl="""
   CREATE TABLE IF NOT EXISTS Projects(
   	id INT NOT NULL AUTO_INCREMENT,
@@ -18,12 +25,6 @@ def createTable(engine):
   return "Table Created"
 
 def getProjects():
-  my_secret = os.environ['db_key']
-  engine = create_engine(my_secret, connect_args={
-    "ssl":{
-    "ssl_ca": "/etc/ssl/cert.pem"
-    }
-  })
   conn = engine.connect()
   result = conn.execute(text("Select * from Projects"))  
   conn.close()
@@ -32,14 +33,24 @@ def getProjects():
     result_dict.append(dict(row._mapping))
   return result_dict
 
-def getTables(engine):
+def getProject(id):
+  with engine.connect() as conn:
+    result = conn.execute(
+      text("SELECT * FROM Projects WHERE id = '{}'".format(id)))
+  rows = result.all()
+  if len(rows) == 0:
+    return None
+  else:
+    return dict(rows[0]._mapping)
+
+def getTables():
   conn = engine.connect()
   result = conn.execute(text("Show Tables"))  
   conn.commit()
   conn.close()
   return result.all
 
-def insertProjects(engine):
+def insertProjects():
   conn = engine.connect()
   #Insert data
   for project in PROJECTS:
@@ -66,15 +77,6 @@ PROJECTS = [
   'desc':"This project calculates the yeild of bond auctions from Treasury Direct. The cheapest to deliver is also calculated along with a yield curve.",
   'date':"12/20/2021"  
 }]
-###########
-#db_string = pw.pw['db_connection_str'] #os.getenv("DB_CONNECTION_STRING")
-#my_secret = os.environ['DB_CONNECTION_STRING']
-#print(os.getenv("DB_CONNECTION_STRING"))
-#print(my_secret)
-#engine = create_engine(db_string, connect_args={
-#    "ssl":{
-#    "ssl_ca": "/etc/ssl/cert.pem"
-#    }
-#  })
-#x = getProjects()
-#print(x)
+
+x = getProject(1)
+print(x)
