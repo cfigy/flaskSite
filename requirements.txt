@@ -6,3 +6,5 @@ yfinance
 prophet
 datetime
 plotly
+mplfinance
+tradingview
