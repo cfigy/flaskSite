@@ -8,6 +8,9 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.10"
 Flask = "^2.3.2"
 SQLAlchemy = "^2.0.19"
+prophet = "^1.1.4"
+yfinance = "^0.2.25"
+plotly = "^5.15.0"
 
 [tool.poetry.dev-dependencies]
 

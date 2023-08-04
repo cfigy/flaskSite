@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include 'nav2.html' %}
+    {% include 'bootstrap.html' %}
+    <title>Forecaster</title>
+    <link rel="favicon" href="/static/favicon.ico">
+  </head>
+  <body>    
+    <div class="container">
+      <h1 class="text-center mt-2 mb-4">Forecaster</h1>
+      <p class="lead">
+        This page will provide a forecast for a selected stock.
+      </p>
+      <div id='chart' class='chart'”></div>
+        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+        <script type='text/javascript'>
+          var graphs = {{graphJSON | safe}};
+          Plotly.plot('chart',graphs,{});
+        </script>
+      </div>
+      <div id='chart2' class='chart2'”></div>
+        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+        <script type='text/javascript'>
+          var graphs = {{graphJSON2 | safe}};
+          Plotly.plot('chart2',graphs,{});
+        </script>
+      </div>
+    </div>
+    {% include 'footer.html' %}
+  </body>
+</html>
