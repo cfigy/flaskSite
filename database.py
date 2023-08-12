@@ -26,7 +26,7 @@ def createTable():
 
 def getProjects():
   conn = engine.connect()
-  result = conn.execute(text("Select * from Projects"))  
+  result = conn.execute(text("SELECT * FROM Projects WHERE display = 1"))  
   conn.close()
   result_dict =[]
   for row in result.all():
@@ -57,6 +57,15 @@ def insertProjects():
     conn.execute(text("INSERT INTO Projects (title, link, descr, date) VALUES('"+project['title']+"','"+project['link']+"','"+project['desc']+"','"+project['date']+"')"))  
   conn.commit()
   conn.close()
+
+def insertNewColumn():
+  conn = engine.connect()
+  #alter table 
+  query = "ALTER TABLE Projects ADD display BIT DEFAULT 1 NOT NULL;"
+  conn.execute(text(query))
+  conn.commit()
+  conn.close()
+
 ###############
 PROJECTS = [
 {
