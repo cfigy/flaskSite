@@ -10,15 +10,13 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/forecaster/spy">Forecaster</a>
           </li>
-           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('database') }}">DB</a>
-          </li>
           {% if current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('admin') }}">Admin</a>
           </li>
-          
-          
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('database') }}">DB</a>
+          </li>
           {% endif %}                      
           
         </ul>
