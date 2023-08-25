@@ -365,11 +365,11 @@ def forecaster(sym):
 
   m = Prophet()
   m.fit(df_train, iter=1000)
-  #future = m.make_future_dataframe(periods=period)
-  #forecast = m.predict(future)
+  future = m.make_future_dataframe(periods=period)
+  forecast = m.predict(future)
 
-  #fig2 = plot_plotly(m, forecast)
-  #graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+  fig2 = plot_plotly(m, forecast)
+  graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
 
   return render_template('forecaster.html',
                          graphJSON=graphJSON,
