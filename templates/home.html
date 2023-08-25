@@ -1,28 +1,19 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    {% include 'nav2.html' %}
-    {% include 'bootstrap.html' %}
-    <title>Data Science</title>
-    <link rel="shortcut icon" href="/static/favicon.ico">
-  </head>
-  <body>
-    {% include 'banner.html' %}     
-    <div class="container">
-      <h1 class="text-center mt-2 mb-4">Data Science Projects</h1>
-      <p class="lead">
-        This page lists a few data science projects below. There may be a few entries that are not data science related. For example, the entry about calculating bond yields from goverment bond auctions found on Treasure Direct has nothing to do with data science.
-      </p>
-      <h2 class="text-center" mt-2 mb-4>Projects List</h2>
-      <div>
-        {% for project in projects %}
-          {% include 'project-table.html'%}
-        {% endfor %}
-      </div>
-      <div class="text-center"> 
-        <a href="mailto:chris.figy@gmail.com" class="btn btn-primary btn-lg">Contact</a>
-      </div>
+{% extends 'base.html'%}
+{% block content %}
+  {% include 'banner.html' %}
+  <div class="container">
+    <h1 class="text-center mt-2 mb-4">Data Science Projects</h1>
+    <p class="lead">
+      This page lists a few data science projects below. There are a few entries that are not data science related. For example, the entry about calculating bond yields from goverment bond auctions found on Treasure Direct has nothing to do with data science.
+    </p>
+    <h2 class="text-center mt-2 mb-4">Projects List</h2>
+    <div>
+      {% for project in projects %}
+        {% include 'project-table.html'%}
+      {% endfor %}
     </div>
-    {% include 'footer.html' %}
-  </body>
-</html>
+    <div class="text-center"> 
+      <a href="mailto:chris.figy@gmail.com" class="btn btn-primary btn-lg">Contact</a>
+    </div>
+  </div>
+{% endblock %}

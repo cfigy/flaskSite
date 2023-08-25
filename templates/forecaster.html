@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    {% include 'nav2.html' %}
-    {% include 'bootstrap.html' %}
-    <title>Forecaster</title>
-    <link rel="favicon" href="/static/favicon.ico">
-  </head>
-  <body>    
+{% extends 'base.html'%}  
+
+{% block content %}   
     <div class="container">
       <h1 class="text-center mt-4 mb-4">Forecaster</h1>
       <p class="lead">
@@ -16,7 +10,7 @@
         <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
         <script type='text/javascript'>
           var graphs = {{graphJSON | safe}};
-          Plotly.plot('chart',graphs,{});
+          Plotly.plot('chart', graphs, {});
         </script>
       </div>
       <div id='chart2' class='chart2'”></div>
@@ -27,6 +21,4 @@
         </script>
       </div>
     </div>
-    {% include 'footer.html' %}
-  </body>
-</html>
+{% endblock %}

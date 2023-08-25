@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="container">
+<!-- toast messages --> 
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>  
+  {% endfor %}
+<!-- Register section -->    
+  <br/><br/>
+  <h2>Register User</h2>
+  <div class="shadow p-3 mb-5 bg-white rounded">
+    <form action='/register' method="POST"
+      {{ form.hidden_tag() }}
+      {{ form.csrf_token }}
+  
+      {{ form.name.label(class="form-label, mt-1") }}
+      {{ form.name(class="form-control") }}
+      
+      {{ form.username.label(class="form-label, mt-1") }}
+      {{ form.username(class="form-control") }}
+      
+      {{ form.email.label(class="form-label, mt-1") }}
+      {{ form.email(class="form-control") }}
+      
+      {{ form.phone_number.label(class="form-label, mt-1") }}
+      {{ form.phone_number(class="form-control") }}
+      
+      {{ form.password_hash.label(class="form-label, mt-1") }}
+      {{ form.password_hash(class="form-control") }}
+      
+      {{ form.password_hash2.label(class="form-label, mt-1") }}
+      {{ form.password_hash2(class="form-control") }}  
+      <br/>
+      {{ form.submit(class="btn btn-secondary") }}
+    </form>
+  </div>
+</div>
+{% endblock %}

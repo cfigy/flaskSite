@@ -1,0 +1,49 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="container">
+<!-- toast messages --> 
+{% for message in get_flashed_messages() %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>  
+{% endfor %}
+<!-- POST - After a user is added section -->  
+{% if name %}
+  <br/>
+  <h2>Update</h2>
+  <br/>
+  <table class="table table-hover table-boardered table-striped">
+    {% for user in users %}
+      <tr>
+        <td>{{ user.id }}. {{ user.name }} - {{ user.email }} - {{ user.phone_number }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+<!-- Add a user section -->    
+{% else %}
+  <br/><br/>
+  <h2>Update User</h2>
+  <div class="shadow p-3 mb-5 bg-white rounded">
+    <form action="/update/{{name_to_update.id}}" method="POST"
+      {{ form.hidden_tag() }}
+      {{ form.csrf_token }}
+  
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(value=name_to_update.name, class="form-control") }}
+  
+      {{ form.email.label(class="form-label") }}
+      {{ form.email(value=name_to_update.email ,class="form-control") }}
+
+      {{ form.phone_number.label(class="form-label") }}
+      {{ form.phone_number(value=name_to_update.phone_number ,class="form-control") }}
+      <br/>
+      {{ form.submit(class="btn btn-secondary") }}  <a href='{{ url_for("delete", id=id)}}' class="btn btn-danger">Delete</a>
+    </form>
+  </div>
+{% endif %}
+</div>
+
+
+{% endblock %}

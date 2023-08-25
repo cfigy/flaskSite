@@ -1,3 +1,4 @@
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 import os
 
@@ -23,6 +24,23 @@ def createTable():
   conn.commit()
   conn.close()
   return "Table Created"
+
+def createUserTable():
+  createtbl="""
+  CREATE TABLE IF NOT EXISTS Users(
+  	id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(120) NOT NULL,
+    email VARCHAR(120) NOT NULL,
+    date_added DATE,
+    PRIMARY KEY (id)
+    )"""
+  #Password VARCHAR(120) NOT NULL,
+  conn = engine.connect() 
+  conn.execute(text(createtbl)) 
+  conn.commit()
+  conn.close()
+  return "Table Created"
+
 
 def getProjects():
   conn = engine.connect()
@@ -78,13 +96,13 @@ PROJECTS = [
   'title':"Neural Networks: S&P 500 Prediction",
   'link':"www.example.com",
   'desc':"This project uses various ML technics to forecast the closing price of the S&P 500. There is a summary to show which ML methods work best.",
-  'date':"12/20/2021"  
+  'date':"2/20/2023"  
 },
 {
   'title':"Bond Yields",
   'link':"www.example.com",
   'desc':"This project calculates the yeild of bond auctions from Treasury Direct. The cheapest to deliver is also calculated along with a yield curve.",
-  'date':"12/20/2021"  
+  'date':"12/20/2016"  
 }]
 
 x = getProject(1)

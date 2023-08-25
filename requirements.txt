@@ -8,3 +8,8 @@ datetime
 plotly
 mplfinance
 tradingview
+flask-login
+flask-wtf
+Flask-Migrate
+flask_mail
+itsdangerous
