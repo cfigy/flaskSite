@@ -10,8 +10,8 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
 #from models import Users
 import os
-from prophet import Prophet
-from prophet.plot import plot_plotly
+#from prophet import Prophet
+#from prophet.plot import plot_plotly
 
 from datetime import date
 from datetime import datetime
@@ -181,7 +181,8 @@ def dashboard():
   return render_template('dashboard.html',
                          sym=sym,
                          mtable=mtable,
-                         wtable=wtable,wt=wt)
+                         wtable=wtable,
+                         wt=wt)
 
 
 #reg new user
