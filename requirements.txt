@@ -3,7 +3,7 @@ Gunicorn
 sqlalchemy
 pymysql
 yfinance
-prophet
+scikit-learn
 datetime
 plotly
 mplfinance
