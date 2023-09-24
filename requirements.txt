@@ -13,7 +13,5 @@ flask-wtf
 Flask-Migrate
 flask_mail
 itsdangerous
-date
-prophet.plot
-werkzeug.security
+werkzeug
 forecaster
