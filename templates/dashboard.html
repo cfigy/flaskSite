@@ -9,6 +9,26 @@
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>  
 {% endfor %}
-  <h1>Dashboard</h1>
+</br>
+  <h1>{{ sym }} Dashboard</h1></br>
+    <form method="POST" class="mt-4">
+      <div class="form-group">
+          <label for="symbol">Enter Stock Symbol:</label>
+          <input type="text" class="form-control" id="symbol" name="symbol" value="{{ symbol }}">
+      </div></br>
+      <button type="submit" class="btn btn-primary">Fetch Data</button>
+    </form>
+    {% if error_message %}
+        <p class="text-danger">{{ error_message }}</p>
+    {% endif %}
+  <h3 class="mt-4">Monthly Net Change Table</h3>
+  <div class="container">
+        {{ mtable | safe }}
+  </div></br>
+  <h3 class="mt-4">Weekly Net Change Table (This week = {{ wt }}.)</h3>
+  <div class="container">
+        {{ wtable | safe }}
+  </div></br></br>
+
   <a class="nav-link active" aria-current="page" href="{{ url_for('logout') }}">Log Out</a
 {% endblock %}

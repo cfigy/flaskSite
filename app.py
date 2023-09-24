@@ -4,6 +4,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from database import getProjects, getProject, createUserTable
+from fetcher import monthlyFetcher, weeklyFetcher, dailyFetcher
 import forms as frm
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
@@ -11,7 +12,7 @@ from itsdangerous import URLSafeTimedSerializer
 import os
 from prophet import Prophet
 from prophet.plot import plot_plotly
-import yfinance as yf
+
 from datetime import date
 from datetime import datetime
 import forecaster as fc
@@ -109,9 +110,10 @@ def database():
   #if current_user.id == 1:
   r = db.create_all()
   return render_template('database.html', r=r)
+
+
 # else:
 #   return redirect(url_for('page_not_found'))
-
 
 #############################################
 #  Users routes
@@ -172,7 +174,14 @@ def logout():
 @app.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
-  return render_template('dashboard.html')
+  #if sym == None:
+  sym = '^GSPC'
+  mtable = monthlyFetcher(sym)
+  wtable, wt = weeklyFetcher(sym)
+  return render_template('dashboard.html',
+                         sym=sym,
+                         mtable=mtable,
+                         wtable=wtable,wt=wt)
 
 
 #reg new user
@@ -349,13 +358,11 @@ def admin_submit():
 
 
 @app.route("/forecaster/<sym>")
+@login_required
 def forecaster(sym):
   if sym == None:
     sym = 'SPY'
-  START = "2018-01-01"
-  TODAY = date.today().strftime("%Y-%m-%d")
-  data = yf.download(sym, START, TODAY)
-  data.reset_index(inplace=True)
+  data = dailyFetcher(sym)
   fig = fc.plot_raw_data(data)
   graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -363,17 +370,16 @@ def forecaster(sym):
   df_train = data[["Date", "Close"]]
   df_train = df_train.rename(columns={"Date": "ds", "Close": "y"})
 
-  m = Prophet()
-  m.fit(df_train, iter=1000)
-  future = m.make_future_dataframe(periods=period)
-  forecast = m.predict(future)
+  #m = Prophet()
+  #m.fit(df_train, iter=1000)
+  #future = m.make_future_dataframe(periods=period)
+  #forecast = m.predict(future)
 
-  fig2 = plot_plotly(m, forecast)
-  graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+  #fig2 = plot_plotly(m, forecast)
+  #graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
 
   return render_template('forecaster.html',
-                         graphJSON=graphJSON,
-                         graphJSON2=graphJSON)
+                         graphJSON=graphJSON)  # graphJSON2=graphJSON)
 
 
 @app.route('/chartdata', methods=['POST'])
