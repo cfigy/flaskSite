@@ -3,7 +3,6 @@ Gunicorn
 sqlalchemy
 pymysql
 yfinance
-scikit-learn
 datetime
 plotly
 mplfinance
@@ -14,4 +13,3 @@ Flask-Migrate
 flask_mail
 itsdangerous
 werkzeug
-forecaster
