@@ -1,7 +1,7 @@
 import pandas as pd
 import yfinance as yf
 import datetime
-from datetime import date 
+from datetime import date
 
 
 def monthlyFetcher(sym):
@@ -12,17 +12,21 @@ def monthlyFetcher(sym):
   data['NetChange'] = data['Adj Close'].diff()
   data['%Change'] = data['Adj Close'].pct_change() * 100
   # Extract year and month from the Date index
-  #data['Year'] = data.index.year
-  #data['Month'] = data.index.month
+  print(f'Index is a {type(data.index)} datatype.')
+  data['Year'] = data.index.year
+  data['Month'] = data.index.month
   # Pivot the data to create a pivot table with months as columns and years as rows
-  pivot_table = data#pd.pivot_table(data,
-                     #          values=['NetChange'],
-                      #         index='Year',
-                       #        columns='Month')
+  pivot_table = pd.pivot_table(data,
+                               values=['NetChange'],
+                               index='Year',
+                               columns='Month')
 
   # Rename the columns with month names
-  #month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  # pivot_table.columns = month_names
+  month_names = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
+    'Nov', 'Dec'
+  ]
+  pivot_table.columns = month_names
 
   # Calculate the average row and add it to the pivot table
   # average_row = pivot_table.mean().to_frame(name="Average")
