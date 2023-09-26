@@ -177,7 +177,7 @@ def dashboard():
   #if sym == None:
   sym = '^GSPC'
   mtable = monthlyFetcher(sym)
-  wtable, wt = weeklyFetcher(sym)
+  wtable, wt = monthlyFetcher(sym)
   return render_template('dashboard.html',
                          sym=sym,
                          mtable=mtable,
