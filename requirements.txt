@@ -13,3 +13,4 @@ Flask-Migrate
 flask_mail
 itsdangerous
 werkzeug
+pandas
