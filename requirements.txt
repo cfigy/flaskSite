@@ -2,7 +2,7 @@ Flask
 Gunicorn
 sqlalchemy
 pymysql
-yfinance
+yfinance==0.2.25
 datetime
 plotly
 mplfinance
