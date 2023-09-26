@@ -1,7 +1,7 @@
 import pandas as pd
 import yfinance as yf
-import calendar
-from datetime import date
+import datetime
+from datetime import date 
 
 
 def monthlyFetcher(sym):
