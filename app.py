@@ -1,29 +1,33 @@
+import os
+import json
+from datetime import date
+from datetime import datetime
 from flask import Flask, render_template, jsonify, request, redirect, flash, url_for
 from flask_migrate import Migrate
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
-from database import getProjects, getProject, createUserTable
-from fetcher import monthlyFetcher, weeklyFetcher, dailyFetcher
-import forms as frm
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
-#from models import Users
-import os
+import forms as frm
+import plotly
+import mplfinance as mp
+import tradingview as tv
 #from prophet import Prophet
 #from prophet.plot import plot_plotly
 
-from datetime import date
-from datetime import datetime
+#My files
+from database import getProjects, getProject, createUserTable
+from fetcher import monthlyFetcher, weeklyFetcher, dailyFetcher
 import forecaster as fc
-import plotly
-import json
-import mplfinance as mp
-import tradingview as tv
+#from models import Users
 
+#############################################################################################
 app = Flask(__name__)
+
 #FORMS
 app.config['SECRET_KEY'] = os.environ['form_key']
+#DB
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['db_key2']
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 #MAIL
@@ -49,8 +53,6 @@ def load_user(user_id):
 
 #####################
 #CLASSES
-
-
 class Users(db.Model, UserMixin):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(28), nullable=False, unique=True)
@@ -111,13 +113,12 @@ def database():
   r = db.create_all()
   return render_template('database.html', r=r)
 
-
 # else:
 #   return redirect(url_for('page_not_found'))
 
+
 #############################################
 #  Users routes
-
 
 #delete user
 @app.route("/delete/<int:id>")
@@ -176,7 +177,7 @@ def logout():
 def dashboard():
   #if sym == None:
   sym = '^GSPC'
-  mtable = monthlyFetcher(sym)
+  mdata, mtable = monthlyFetcher(sym)
   wtable, wt = weeklyFetcher(sym)
   return render_template('dashboard.html',
                          sym=sym,

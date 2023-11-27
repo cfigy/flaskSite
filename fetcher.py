@@ -1,10 +1,14 @@
 import pandas as pd
 import yfinance as yf
-import datetime
 from datetime import date
 
 
 def monthlyFetcher(sym):
+  '''This function fetches monthly data from yahoo and returns a timeseries
+      and a monthly pivot datasets.
+      
+      TODO: -Remove the hardcoded start date and allow user to define'''
+  
   START = "2018-01-01"
   TODAY = date.today().strftime("%Y-%m-%d")
   data = yf.download(sym, START, TODAY, interval='1mo')
@@ -32,7 +36,7 @@ def monthlyFetcher(sym):
   # average_row = pivot_table.mean().to_frame(name="Average")
   # pivot_table = pivot_table.append(average_row.T)
   mtable = pivot_table.to_html(classes='table table-striped')
-  return mtable
+  return data, mtable
 
 
 def weeklyFetcher(sym):
