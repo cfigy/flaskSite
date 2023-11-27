@@ -197,7 +197,7 @@ def register():
     user = Users.query.filter_by(email=form.email.data).first()
     if user is None:
       #token = s.dump(form.email.data, salt='verifyEmail')
-      hashed_pw = generate_password_hash(form.password_hash.data, "sha1")
+      hashed_pw = generate_password_hash(form.password_hash.data, method='sha256')
       user = Users(name=form.name.data,
                    username=form.username.data,
                    email=form.email.data,
