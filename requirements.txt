@@ -1,4 +1,4 @@
-Flask
+Flask==2.3.2
 Gunicorn
 sqlalchemy
 pymysql
@@ -12,5 +12,5 @@ flask-wtf
 Flask-Migrate
 flask_mail
 itsdangerous
-werkzeug
+werkzeug==2.3.3
 pandas==2.0.3

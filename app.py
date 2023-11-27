@@ -113,12 +113,13 @@ def database():
   r = db.create_all()
   return render_template('database.html', r=r)
 
+
 # else:
 #   return redirect(url_for('page_not_found'))
 
-
 #############################################
 #  Users routes
+
 
 #delete user
 @app.route("/delete/<int:id>")
@@ -197,7 +198,8 @@ def register():
     user = Users.query.filter_by(email=form.email.data).first()
     if user is None:
       #token = s.dump(form.email.data, salt='verifyEmail')
-      hashed_pw = generate_password_hash(form.password_hash.data, method='sha256')
+      hashed_pw = generate_password_hash(form.password_hash.data,
+                                         method='sha256')
       user = Users(name=form.name.data,
                    username=form.username.data,
                    email=form.email.data,
