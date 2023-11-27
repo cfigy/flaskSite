@@ -197,7 +197,7 @@ def register():
     user = Users.query.filter_by(email=form.email.data).first()
     if user is None:
       #token = s.dump(form.email.data, salt='verifyEmail')
-      hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
+      hashed_pw = generate_password_hash(form.password_hash.data, "sha1")
       user = Users(name=form.name.data,
                    username=form.username.data,
                    email=form.email.data,
@@ -210,7 +210,7 @@ def register():
       #msg_title = "PitSavvy Email Verification"
       #sender = "noreply@pitsavvy.com"
       #msg = Message(msg_title, sender=sender, recipients=[form.email.data])
-      #link = url_for('cofirm_email', token=token, _external=True)
+      #link = url_for('confirm_email', token=token, _external=True)
       #msg.html = render_template("verify_email.html", form=form, link=link)
 
       #try:
