@@ -188,7 +188,7 @@ def dashboard():
 
 #reg new user
 @app.route("/register", methods=["GET", "POST"])
-@login_required
+#@login_required
 def register():
   name = None
   form = frm.UserForm()
