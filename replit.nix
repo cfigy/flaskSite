@@ -1,5 +1,9 @@
 { pkgs }: {
   deps = [
+    pkgs.mailutils
+    pkgs.sqlite.bin
+    pkgs.glibcLocales
+    pkgs.glibc
     pkgs.python39Packages.clvm-tools
     pkgs.sudo
     pkgs.python310Full

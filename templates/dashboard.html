@@ -1,5 +1,27 @@
 {% extends 'base.html'%}
 
+
+<head>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+
 {% block content %}
 <div class="container">
 <!-- toast messages --> 
@@ -25,10 +47,53 @@
   <div class="container">
         {{ mtable | safe }}
   </div></br>
+  <div>
+    <div id='chart' class='chart'”></div>
+      <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+      <script type='text/javascript'>
+        var graphs = {{mgjson | safe}};
+        Plotly.plot('chart', graphs, {});
+      </script>
+    </div>
+    
   <h3 class="mt-4">Weekly Net Change Table (This week = {{ wt }}.)</h3>
   <div class="container">
         {{ wtable | safe }}
   </div></br></br>
-
+  <div>
+    <h3 class="mt-4">Technicals:</h3>
+    <table>
+        <tr>
+            <th></th>
+            <th>Monthly</th>
+            <th>Weekly</th>
+            <th>Daily</th>
+        </tr>
+        <tr>
+            <td>EMA Bull</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>HTF EMA</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Squeeze</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>MACD</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+  </div>
   <a class="nav-link active" aria-current="page" href="{{ url_for('logout') }}">Log Out</a
 {% endblock %}

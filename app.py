@@ -17,7 +17,6 @@ import tradingview as tv
 #from prophet.plot import plot_plotly
 
 #My files
-from database import getProjects, getProject, createUserTable
 from fetcher import monthlyFetcher, weeklyFetcher, dailyFetcher
 import forecaster as fc
 #from models import Users
@@ -28,8 +27,8 @@ app = Flask(__name__)
 #FORMS
 app.config['SECRET_KEY'] = os.environ['form_key']
 #DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['db_key2']
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['db_key2']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ds.db'
 #MAIL
 app.config['MAIL_SERVER'] = "smtp.googlemail.com"
 app.config['MAIL_PORT'] = 587
@@ -38,6 +37,7 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_PASSWORD'] = os.environ['mail_key']
 
 db = SQLAlchemy(app)
+#db.init_app(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -54,6 +54,7 @@ def load_user(user_id):
 #####################
 #CLASSES
 class Users(db.Model, UserMixin):
+  __tablename__ = 'users'
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(28), nullable=False, unique=True)
   name = db.Column(db.String(128), nullable=False)
@@ -78,6 +79,7 @@ class Users(db.Model, UserMixin):
 
 
 class Projects(db.Model):
+  __tablename__ = 'projects'
   id = db.Column(db.Integer, primary_key=True)
   title = db.Column(db.String(120), nullable=False, unique=True)
   link = db.Column(db.String(120))
@@ -85,18 +87,49 @@ class Projects(db.Model):
   date = db.Column(db.DateTime, default=datetime.utcnow)
   display = db.Column(db.Boolean, default=False)
 
-
+##########################
+#one time setup
+def insertProjects():
+  '''One time call to add .csv file of projects to db.'''
+  #Open Read Close File
+  infile = open('instance/projectsTable.csv', 'r')     #Open a file
+  allData = infile.readlines()           #Read data
+  infile.close                           #close file
+  
+  #Cleanup data to insert
+  for aline in allData:
+      aline = aline.strip()           #Remove new line chars.
+      aline = aline.split(',')        #Split into a list on ', '
+      proj = Projects(id=int(aline[0]),
+         title=aline[1],
+         link=aline[2],
+         descr=aline[3],
+         date=datetime.strptime(aline[4],"%m/%d/%Y").date(),
+         display=int(aline[5]))
+      db.session.add(proj)
+      db.session.commit()
+  return "ok"
+  
 ##################
 #ROUTES
 @app.route("/")
 def index():
-  Projects = getProjects()
-  return render_template('home.html', projects=Projects)
+  projects = Projects.query.all()
+  print("Project Len = " + str(len(projects))) 
+  if len(projects) == 0:
+    print("INSERTING .CSV DATA")
+    insertProjects()
+    projects = Projects.query.all()
+  for p in projects:
+    print(p.id) 
+  print(type(projects))
+  
+  return render_template('home.html', projects=projects)
 
 
 @app.route("/project/<id>")
 def show_project(id):
-  Project = getProject(id)
+  Project = Projects.query.filter_by(id=id).first() #getProject(id)
   return render_template('project.html', project=Project)
 
 
@@ -179,17 +212,23 @@ def dashboard():
   #if sym == None:
   sym = '^GSPC'
   mdata, mtable = monthlyFetcher(sym)
+  # Plot the histogram with 30 bins
+  fig = fc.plot_histo_data(mdata)
+  mgjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
   wtable, wt = weeklyFetcher(sym)
   return render_template('dashboard.html',
                          sym=sym,
+                         mdata=mdata,
                          mtable=mtable,
+                         mgjson=mgjson,
                          wtable=wtable,
                          wt=wt)
 
 
 #reg new user
 @app.route("/register", methods=["GET", "POST"])
-@login_required
+#@login_required
 def register():
   name = None
   form = frm.UserForm()
