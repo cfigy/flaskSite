@@ -92,7 +92,7 @@ class Projects(db.Model):
 def insertProjects():
   '''One time call to add .csv file of projects to db.'''
   #Open Read Close File
-  infile = open('instance/projectsTable.csv', 'r')     #Open a file
+  infile = open('projectsTable.csv', 'r')     #Open a file
   allData = infile.readlines()           #Read data
   infile.close                           #close file
   
