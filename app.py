@@ -114,22 +114,23 @@ def insertProjects():
 #ROUTES
 @app.route("/")
 def index():
-  projects = Projects.query.all()
-  print("Project Len = " + str(len(projects))) 
-  if len(projects) == 0:
-    print("INSERTING .CSV DATA")
-    db.create_all()
-    insertProjects()
-    #####
-    hashed_pw = generate_password_hash("123456",
-       method='sha256')
-    user = Users(name="test",
-    username="test",
-    email="test",
-    phone_number="555",
-    password_hash=hashed_pw)
-    db.session.add(user)
-    db.session.commit()
+  try:
+      projects = Projects.query.all()
+      print("Project Len = " + str(len(projects)))
+  except error:
+      print("INSERTING .CSV DATA")
+      db.create_all()
+      insertProjects()
+      #####
+      hashed_pw = generate_password_hash("123456",
+         method='sha256')
+      user = Users(name="test",
+      username="test",
+      email="test",
+      phone_number="555",
+      password_hash=hashed_pw)
+      db.session.add(user)
+      db.session.commit()
     ####
     projects = Projects.query.all()
   for p in projects:
