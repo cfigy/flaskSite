@@ -311,7 +311,7 @@ def users():
 @app.route("/update/<int:id>", methods=["GET", "POST"])
 @login_required
 def update(id):
-  if current_user.id == 1:
+  if current_user.id == 2:
     form = frm.UserForm()
     name_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
