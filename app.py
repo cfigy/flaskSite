@@ -172,7 +172,7 @@ def database():
 @app.route("/delete/<int:id>")
 @login_required
 def delete(id):
-  if current_user.id == 1:
+  if current_user.id == 2:
     name = None
     form = frm.UserForm()
     user_to_delete = Users.query.get_or_404(id)
