@@ -118,7 +118,19 @@ def index():
   print("Project Len = " + str(len(projects))) 
   if len(projects) == 0:
     print("INSERTING .CSV DATA")
+    db.create_all()
     insertProjects()
+    #####
+    hashed_pw = generate_password_hash("123456",
+       method='sha256')
+    user = Users(name="test",
+    username="test",
+    email="test",
+    phone_number="555",
+    password_hash=hashed_pw)
+    db.session.add(user)
+    db.session.commit()
+    ####
     projects = Projects.query.all()
   for p in projects:
     print(p.id) 
@@ -143,7 +155,8 @@ def admin():
 @login_required
 def database():
   #if current_user.id == 1:
-  r = db.create_all()
+  #r = db.create_all()
+  r = db.session.query(Projects).all()
   return render_template('database.html', r=r)
 
 
@@ -450,4 +463,3 @@ def tv():
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', debug=True)
-  db.create_all()
