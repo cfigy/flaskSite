@@ -117,7 +117,7 @@ def index():
   try:
       projects = Projects.query.all()
       print("Project Len = " + str(len(projects)))
-  except error:
+  except:
       print("INSERTING .CSV DATA")
       db.create_all()
       insertProjects()
