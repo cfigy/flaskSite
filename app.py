@@ -140,7 +140,7 @@ def admin():
 
 
 @app.route("/database")
-#@login_required
+@login_required
 def database():
   #if current_user.id == 1:
   r = db.create_all()
@@ -228,7 +228,7 @@ def dashboard():
 
 #reg new user
 @app.route("/register", methods=["GET", "POST"])
-#@login_required
+@login_required
 def register():
   name = None
   form = frm.UserForm()
