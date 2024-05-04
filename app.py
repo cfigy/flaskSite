@@ -300,7 +300,7 @@ def confirm_email(token):
 @app.route("/users")
 @login_required
 def users():
-  if current_user.id == 1:
+  if current_user.id == 2:
     users = Users.query.order_by(Users.date_added)
     return render_template('users.html', users=users)
   else:
