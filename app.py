@@ -132,7 +132,7 @@ def index():
       db.session.add(user)
       db.session.commit()
     ####
-  projects = Projects.query.all()
+  projects = Projects.query.where(Projects.display == True)
   for p in projects:
     print(p.id) 
   print(type(projects))
